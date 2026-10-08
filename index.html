@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CampusFind — Demo Lost & Found</title>
+<style>
+:root{--green:#059669;--green2:#10b981;--red:#ef4444;--blue:#2563eb;--orange:#f59e0b;--purple:#7c3aed;--ink:#0f172a;--muted:#64748b;--line:#e5e7eb;--bg:#f8fafc;--white:#fff}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink)}
+button,input,select,textarea{font:inherit}button{cursor:pointer}.container{width:min(1180px,calc(100% - 32px));margin:auto}
+nav{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}.navin{height:68px;display:flex;align-items:center;gap:24px}.brand{font-weight:900;font-size:20px;display:flex;align-items:center;gap:9px}.logo{width:34px;height:34px;background:var(--green);color:#fff;border-radius:10px;display:grid;place-items:center}.navlinks{display:flex;gap:7px;align-items:center;flex:1}.navlinks button,.userbtn{border:0;background:transparent;padding:9px 12px;border-radius:9px;color:#475569}.navlinks button:hover,.userbtn:hover{background:#f1f5f9}.spacer{flex:1}
+.hero{padding:72px 0 50px;background:linear-gradient(135deg,#ecfdf5,#f8fafc 58%,#eff6ff)}.hero h1{font-size:clamp(36px,6vw,62px);line-height:1.02;margin:0 0 18px;letter-spacing:-2px}.hero h1 span{color:var(--green)}.hero p{font-size:18px;color:var(--muted);max-width:650px;line-height:1.65}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:25px}
+.btn{border:0;border-radius:11px;padding:11px 16px;font-weight:700;transition:.15s}.btn:hover{transform:translateY(-1px)}.primary{background:var(--green);color:#fff}.danger{background:var(--red);color:#fff}.secondary{background:#fff;border:1px solid var(--line);color:#334155}.dark{background:#0f172a;color:#fff}.small{padding:8px 11px;font-size:13px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:30px}.stat,.card{background:#fff;border:1px solid var(--line);border-radius:17px;padding:20px;box-shadow:0 4px 18px rgba(15,23,42,.04)}.stat strong{font-size:28px;display:block}.muted{color:var(--muted)}.section{padding:42px 0}.section h2{margin:0 0 8px;font-size:27px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.report-card{cursor:pointer}.report-card:hover{border-color:#a7f3d0;box-shadow:0 10px 28px rgba(15,23,42,.08)}.fakeimg{height:150px;border-radius:12px;background:linear-gradient(135deg,#e2e8f0,#f8fafc);display:grid;place-items:center;font-size:45px;margin-bottom:14px}.tag{display:inline-flex;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:800;margin-right:5px}.lost{background:#fee2e2;color:#b91c1c}.found{background:#d1fae5;color:#047857}.pending{background:#fef3c7;color:#a16207}.open{background:#dbeafe;color:#1d4ed8}.matched{background:#ede9fe;color:#6d28d9}.claimed{background:#ffedd5;color:#c2410c}.returned{background:#dcfce7;color:#15803d}.rejected{background:#fee2e2;color:#b91c1c}.archived{background:#e5e7eb;color:#475569}
+.filters{display:grid;grid-template-columns:2fr repeat(4,1fr);gap:10px;margin:20px 0}.input,.select,.textarea{width:100%;padding:11px 12px;border:1px solid #dbe1e8;border-radius:10px;background:#fff;outline:none}.input:focus,.select:focus,.textarea:focus{border-color:#6ee7b7;box-shadow:0 0 0 3px #d1fae5}.form{max-width:780px;margin:35px auto}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{margin-bottom:15px}.field label{font-size:13px;font-weight:700;display:block;margin-bottom:6px}.full{grid-column:1/-1}
+.page{padding:38px 0;min-height:70vh}.back{color:var(--green);border:0;background:transparent;padding:0;font-weight:700;margin-bottom:15px}.detail{display:grid;grid-template-columns:1.05fr 1fr;gap:24px}.detailimg{min-height:380px;border-radius:18px;background:linear-gradient(135deg,#e2e8f0,#f8fafc);display:grid;place-items:center;font-size:90px}.kv{display:grid;grid-template-columns:130px 1fr;gap:11px;font-size:14px}.kv b{color:#64748b}.notice{padding:13px 15px;border-radius:12px;background:#fffbeb;color:#92400e;font-size:13px;margin:15px 0}
+.dashboardhead{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:22px}.dashstats{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-bottom:20px}.dashgrid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.listrow{padding:13px 0;border-bottom:1px solid #f1f5f9;display:flex;justify-content:space-between;gap:10px}.listrow:last-child{border:0}
+.adminnav{display:flex;gap:6px;overflow:auto;margin-bottom:20px;background:#eef2f7;padding:5px;border-radius:12px}.adminnav button{border:0;background:transparent;padding:9px 13px;border-radius:9px;white-space:nowrap}.adminnav button.active{background:#fff;box-shadow:0 2px 8px #0000000d;font-weight:800}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:12px;border-bottom:1px solid #eef2f7;vertical-align:top}th{color:#64748b;font-size:11px;text-transform:uppercase}.tablewrap{overflow:auto}
+footer{padding:30px 0;background:#fff;border-top:1px solid var(--line);color:#94a3b8;font-size:12px}.toast{position:fixed;right:18px;bottom:18px;background:#0f172a;color:#fff;padding:12px 15px;border-radius:10px;box-shadow:0 10px 30px #0003;z-index:100;display:none}.modalback{position:fixed;inset:0;background:#0007;display:none;place-items:center;padding:18px;z-index:50}.modal{background:#fff;border-radius:17px;max-width:620px;width:100%;max-height:90vh;overflow:auto;padding:22px}.modal h3{margin-top:0}.modalactions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+.empty{text-align:center;padding:45px 20px;color:#94a3b8}.hidden{display:none!important}
+@media(max-width:850px){.grid{grid-template-columns:1fr 1fr}.detail{grid-template-columns:1fr}.filters{grid-template-columns:1fr 1fr}.filters .input{grid-column:1/-1}.dashgrid{grid-template-columns:1fr}}
+@media(max-width:620px){.navlinks{display:none}.stats,.dashstats,.grid,.formgrid{grid-template-columns:1fr}.filters{grid-template-columns:1fr}.hero{padding-top:45px}.kv{grid-template-columns:105px 1fr}}
+</style>
+</head>
+<body>
+<nav><div class="container navin">
+  <div class="brand"><div class="logo">C</div>CampusFind</div>
+  <div class="navlinks">
+    <button onclick="home()">Beranda</button><button onclick="reports()">Cari Barang</button>
+    <button onclick="createReport('LOST')">Barang Hilang</button><button onclick="createReport('FOUND')">Barang Ditemukan</button>
+  </div>
+  <div id="authArea" class="spacer"></div>
+</div></nav>
+<main id="app"></main>
+<footer><div class="container">CampusFind — Sistem Informasi Kehilangan & Temuan Kampus. <span style="float:right">Demo interaktif • data tersimpan di browser</span></div></footer>
+<div id="toast" class="toast"></div>
+<div id="modalback" class="modalback"><div id="modal" class="modal"></div></div>
+
+<script>
+const KEY='campusfind-demo-v1';
+const seed={
+ users:[
+  {id:'u1',name:'Andi Pratama',student:'22010101',email:'student1@campusfind.ac.id',password:'password123',role:'STUDENT',active:true},
+  {id:'u2',name:'Siti Aulia',student:'22010102',email:'student2@campusfind.ac.id',password:'password123',role:'STUDENT',active:true},
+  {id:'u3',name:'Budi Santoso',student:'22010103',email:'student3@campusfind.ac.id',password:'password123',role:'STUDENT',active:true},
+  {id:'admin',name:'Admin CampusFind',student:'',email:'admin@campusfind.ac.id',password:'password123',role:'ADMIN',active:true}
+ ],
+ cats:['Elektronik','Aksesori','Dokumen','Pakaian','Buku dan Alat Tulis','Kunci','Dompet','Lainnya'],
+ reports:[
+  {id:'r1',owner:'u2',type:'FOUND',status:'OPEN',title:'Dompet kulit hitam',cat:'Dompet',brand:'',color:'Hitam',desc:'Dompet kulit warna hitam ditemukan di area kantin kampus. Di dalamnya terdapat beberapa kartu tanpa perlu menampilkan data pribadi.',loc:'Kantin Utama',date:'2026-10-06T12:20',reporter:'Siti Aulia'},
+  {id:'r2',owner:'u3',type:'LOST',status:'OPEN',title:'Laptop ASUS VivoBook',cat:'Elektronik',brand:'ASUS',color:'Silver',desc:'Laptop ASUS VivoBook warna silver tertinggal setelah kegiatan di laboratorium komputer. Ada stiker kecil di bagian belakang.',loc:'Lab Komputer 2',date:'2026-10-05T16:10',reporter:'Budi Santoso'},
+  {id:'r3',owner:'u1',type:'FOUND',status:'OPEN',title:'Kunci motor dengan gantungan biru',cat:'Kunci',brand:'Honda',color:'Biru',desc:'Satu set kunci motor ditemukan di dekat parkiran gedung B. Gantungan kunci berbentuk persegi berwarna biru.',loc:'Parkiran Gedung B',date:'2026-10-04T09:15',reporter:'Andi Pratama'},
+  {id:'r4',owner:'u1',type:'LOST',status:'MATCHED',title:'Jaket varsity hitam',cat:'Pakaian',brand:'',color:'Hitam',desc:'Jaket varsity hitam tertinggal setelah rapat organisasi. Ada bordir kecil pada bagian dada.',loc:'Ruang Organisasi',date:'2026-10-03T14:00',reporter:'Andi Pratama'},
+  {id:'r5',owner:'u2',type:'FOUND',status:'RETURNED',title:'Kartu identitas kampus',cat:'Dokumen',brand:'',color:'Putih',desc:'Kartu identitas kampus ditemukan di dekat perpustakaan dan sudah diserahkan kepada pemiliknya.',loc:'Perpustakaan',date:'2026-09-30T11:30',reporter:'Siti Aulia'},
+  {id:'r6',owner:'u3',type:'LOST',status:'PENDING',title:'Tempat pensil biru',cat:'Buku dan Alat Tulis',brand:'',color:'Biru',desc:'Tempat pensil warna biru tertinggal setelah kelas. Berisi beberapa alat tulis dan memiliki label kecil di bagian dalam.',loc:'Gedung C Lantai 1',date:'2026-10-07T10:00',reporter:'Budi Santoso'}
+ ],
+ claims:[],
+ handovers:[]
+};
+let db=JSON.parse(localStorage.getItem(KEY)||'null')||seed;
+let me=null, currentReport=null, adminTab='dashboard';
+
+function save(){localStorage.setItem(KEY,JSON.stringify(db))}
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function firstName(n){return n.split(' ')[0]}
+function statusTag(s){return `<span class="tag ${s.toLowerCase()}">${({PENDING:'MENUNGGU',OPEN:'TERBUKA',MATCHED:'COCOK',CLAIMED:'DIKLAIM',RETURNED:'DIKEMBALIKAN',REJECTED:'DITOLAK',ARCHIVED:'DIARSIPKAN'})[s]||s}</span>`}
+function typeTag(t){return `<span class="tag ${t==='LOST'?'lost':'found'}">${t==='LOST'?'HILANG':'DITEMUKAN'}</span>`}
+function toast(x){let t=document.getElementById('toast');t.textContent=x;t.style.display='block';clearTimeout(window.tt);window.tt=setTimeout(()=>t.style.display='none',2500)}
+function openModal(html){document.getElementById('modal').innerHTML=html;document.getElementById('modalback').style.display='grid'}
+function closeModal(){document.getElementById('modalback').style.display='none'}
+document.getElementById('modalback').addEventListener('click',e=>{if(e.target.id==='modalback')closeModal()})
+
+function renderAuth(){
+ const a=document.getElementById('authArea');
+ a.innerHTML=me?`<button class="userbtn" onclick="${me.role==='ADMIN'?'admin()':'dashboard()'}">${esc(firstName(me.name))} ▾</button><button class="btn small secondary" onclick="logout()">Keluar</button>`:
+ `<button class="btn small secondary" onclick="login()">Masuk</button><button class="btn small primary" onclick="register()">Daftar</button>`;
+}
+function layout(x){document.getElementById('app').innerHTML=x;renderAuth()}
+
+function home(){
+ const openLost=db.reports.filter(r=>r.type==='LOST'&&r.status==='OPEN').length;
+ const openFound=db.reports.filter(r=>r.type==='FOUND'&&r.status==='OPEN').length;
+ const returned=db.reports.filter(r=>r.status==='RETURNED').length;
+ const recent=db.reports.filter(r=>r.status!=='PENDING'&&r.status!=='REJECTED'&&r.status!=='ARCHIVED').slice().sort((a,b)=>b.date.localeCompare(a.date)).slice(0,6);
+ layout(`<section class="hero"><div class="container">
+ <div class="tag found">DEMO CAMPUSFIND</div><h1>Barang hilang?<br><span>Kita cari bersama.</span></h1>
+ <p>Platform Lost & Found kampus untuk melaporkan barang hilang atau ditemukan, mencari laporan, mengajukan klaim, dan mengelola proses pengembalian secara terstruktur.</p>
+ <div class="actions"><button class="btn danger" onclick="needLogin('LOST')">⚠ Laporkan Barang Hilang</button><button class="btn primary" onclick="needLogin('FOUND')">✓ Laporkan Barang Ditemukan</button><button class="btn secondary" onclick="reports()">⌕ Cari Barang</button></div>
+ <div class="stats"><div class="stat"><strong>${openLost}</strong><span class="muted">Laporan hilang terbuka</span></div><div class="stat"><strong>${openFound}</strong><span class="muted">Barang ditemukan terbuka</span></div><div class="stat"><strong>${returned}</strong><span class="muted">Pengembalian selesai</span></div></div>
+ </div></section>
+ <section class="section"><div class="container"><h2>Laporan terbaru</h2><p class="muted">Laporan terverifikasi yang sedang aktif.</p><div class="grid" style="margin-top:20px">${recent.map(card).join('')}</div></div></section>
+ <section class="section"><div class="container"><div class="notice">🔒 Jangan masukkan NIM, nomor kartu, alamat rumah, password, atau informasi pribadi sensitif pada deskripsi publik.</div></div></section>`)
+}
+function card(r){
+ return `<div class="card report-card" onclick="detail('${r.id}')"><div class="fakeimg">${r.cat==='Elektronik'?'💻':r.cat==='Dompet'?'👛':r.cat==='Kunci'?'🔑':r.cat==='Pakaian'?'🧥':r.cat==='Dokumen'?'🪪':'📦'}</div>
+ <div>${typeTag(r.type)} ${statusTag(r.status)}</div><h3 style="margin:10px 0 6px">${esc(r.title)}</h3><div class="muted" style="font-size:13px">📍 ${esc(r.loc)} · ${esc(r.cat)}</div></div>`
+}
+function reports(){
+ let q='',type='',cat='',status='',sort='newest';
+ const render=()=>{
+  let arr=db.reports.filter(r=>['OPEN','MATCHED','CLAIMED','RETURNED'].includes(r.status));
+  if(q)arr=arr.filter(r=>(r.title+' '+r.desc+' '+r.cat+' '+r.loc).toLowerCase().includes(q.toLowerCase()));
+  if(type)arr=arr.filter(r=>r.type===type);if(cat)arr=arr.filter(r=>r.cat===cat);if(status)arr=arr.filter(r=>r.status===status);
+  arr.sort((a,b)=>sort==='newest'?b.date.localeCompare(a.date):a.date.localeCompare(b.date));
+  document.getElementById('results').innerHTML=arr.length?arr.map(card).join(''):`<div class="card empty" style="grid-column:1/-1">Tidak ada laporan yang cocok.</div>`;
+ };
+ layout(`<section class="page"><div class="container"><h1>Cari Barang</h1><p class="muted">Temukan laporan barang hilang dan ditemukan di kampus.</p>
+ <div class="filters"><input class="input" id="q" placeholder="Cari nama barang, deskripsi, kategori, lokasi..." oninput="q=this.value;render()">
+ <select class="select" id="type" onchange="type=this.value;render()"><option value="">Semua tipe</option><option value="LOST">Hilang</option><option value="FOUND">Ditemukan</option></select>
+ <select class="select" id="cat" onchange="cat=this.value;render()"><option value="">Semua kategori</option>${db.cats.map(c=>`<option>${esc(c)}</option>`).join('')}</select>
+ <select class="select" id="status" onchange="status=this.value;render()"><option value="">Semua status</option><option value="OPEN">Terbuka</option><option value="MATCHED">Cocok</option><option value="CLAIMED">Diklaim</option><option value="RETURNED">Dikembalikan</option></select>
+ <select class="select" onchange="sort=this.value;render()"><option value="newest">Terbaru</option><option value="oldest">Terlama</option></select></div>
+ <div id="results" class="grid"></div></div></section>`);
+ render();
+}
+function detail(id){
+ const r=db.reports.find(x=>x.id===id);if(!r)return;
+ currentReport=id;
+ const eligible=r.type==='FOUND'&&r.status==='OPEN'&&(!me||r.owner!==me.id);
+ const ownerAction=me&&r.owner===me.id&&r.type==='LOST'&&r.status==='OPEN';
+ layout(`<section class="page"><div class="container"><button class="back" onclick="reports()">← Kembali ke daftar</button><div class="detail">
+ <div class="detailimg">${r.cat==='Elektronik'?'💻':r.cat==='Dompet'?'👛':r.cat==='Kunci'?'🔑':r.cat==='Pakaian'?'🧥':r.cat==='Dokumen'?'🪪':'📦'}</div>
+ <div><div>${typeTag(r.type)} ${statusTag(r.status)}</div><h1>${esc(r.title)}</h1>
+ <p class="muted">${esc(r.desc)}</p><div class="kv"><b>Kategori</b><span>${esc(r.cat)}</span><b>Brand</b><span>${esc(r.brand)||'—'}</span><b>Warna</b><span>${esc(r.color)||'—'}</span><b>Lokasi</b><span>${esc(r.loc)}</span><b>Kejadian</b><span>${new Date(r.date).toLocaleString('id-ID')}</span><b>Pelapor</b><span>${esc(firstName(r.reporter))} ${r.reporter.split(' ')[1]?.[0]||''}.</span></div>
+ ${eligible?`<button class="btn primary" style="margin-top:20px" onclick="claim('${r.id}')">Ajukan Klaim Kepemilikan</button>`:''}
+ ${ownerAction?`<button class="btn secondary" style="margin-top:20px" onclick="markFound('${r.id}')">Tandai Sudah Ditemukan</button>`:''}
+ ${!me&&r.type==='FOUND'&&r.status==='OPEN'?`<div class="notice">Masuk sebagai mahasiswa untuk mengajukan klaim barang ini.</div>`:''}
+ </div></div>
+ <div style="margin-top:24px"><h2>Laporan serupa</h2><div class="grid">${db.reports.filter(x=>x.id!==r.id&&x.cat===r.cat&&x.type!==r.type&&['OPEN','MATCHED'].includes(x.status)).slice(0,3).map(card).join('')||'<div class="muted">Belum ada laporan serupa.</div>'}</div></div>
+ </div></section>`)
+}
+function needLogin(type){if(!me){login(type);return}createReport(type)}
+function login(after){
+ openModal(`<h3>Masuk ke CampusFind</h3><p class="muted">Gunakan akun demo yang tersedia.</p><form onsubmit="doLogin(event)"><div class="field"><label>Email</label><input class="input" id="lemail" type="email" required placeholder="student1@campusfind.ac.id"></div><div class="field"><label>Password</label><input class="input" id="lpass" type="password" required value="password123"></div><button class="btn primary">Masuk</button></form><div class="notice">Mahasiswa: student1@campusfind.ac.id · password123<br>Admin: admin@campusfind.ac.id · password123</div>`);
+ window.loginAfter=after;
+}
+function doLogin(e){e.preventDefault();let u=db.users.find(x=>x.email===document.getElementById('lemail').value&&x.password===document.getElementById('lpass').value&&x.active);if(!u){toast('Email/password salah atau akun nonaktif');return}me=u;closeModal();toast('Berhasil masuk');if(window.loginAfter==='LOST'||window.loginAfter==='FOUND')createReport(window.loginAfter);else u.role==='ADMIN'?admin():dashboard()}
+function register(){
+ openModal(`<h3>Daftar Akun Mahasiswa</h3><form onsubmit="doRegister(event)"><div class="field"><label>Nama</label><input class="input" id="rname" required></div><div class="field"><label>NIM</label><input class="input" id="rstudent" required></div><div class="field"><label>Email</label><input class="input" id="remail" type="email" required></div><div class="field"><label>Password</label><input class="input" id="rpass" type="password" minlength="8" required></div><button class="btn primary">Buat Akun</button></form>`);
+}
+function doRegister(e){e.preventDefault();let email=remail.value;if(db.users.some(u=>u.email===email||u.student===rstudent.value)){toast('Email/NIM sudah digunakan');return}let u={id:'u'+Date.now(),name:rname.value,student:rstudent.value,email,password:rpass.value,role:'STUDENT',active:true};db.users.push(u);save();me=u;closeModal();toast('Akun berhasil dibuat');dashboard()}
+function logout(){me=null;toast('Anda telah keluar');home()}
+function createReport(type='LOST'){
+ if(!me){login(type);return}
+ layout(`<section class="page"><div class="container form"><h1>${type==='LOST'?'Laporkan Barang Hilang':'Laporkan Barang Ditemukan'}</h1><p class="muted">Isi informasi secukupnya. Jangan masukkan data pribadi sensitif.</p>
+ <form class="card" onsubmit="submitReport(event,'${type}')"><div class="formgrid"><div class="field full"><label>Nama barang *</label><input class="input" id="ftitle" required placeholder="Contoh: Laptop ASUS VivoBook"></div>
+ <div class="field"><label>Kategori *</label><select class="select" id="fcat" required>${db.cats.map(c=>`<option>${esc(c)}</option>`).join('')}</select></div>
+ <div class="field"><label>Brand (opsional)</label><input class="input" id="fbrand" placeholder="Contoh: ASUS"></div>
+ <div class="field"><label>Warna (opsional)</label><input class="input" id="fcolor" placeholder="Contoh: Hitam"></div>
+ <div class="field"><label>Lokasi *</label><input class="input" id="floc" required placeholder="Contoh: Perpustakaan"></div>
+ <div class="field full"><label>Deskripsi * (20–1000 karakter)</label><textarea class="textarea" id="fdesc" rows="5" minlength="20" maxlength="1000" required placeholder="Deskripsikan ciri barang secara detail."></textarea></div>
+ <div class="field full"><label>Tanggal & waktu kejadian *</label><input class="input" id="fdate" type="datetime-local" required value="${new Date().toISOString().slice(0,16)}"></div>
+ </div><div class="notice">Laporan baru berstatus <b>PENDING</b> dan perlu diverifikasi admin sebelum tampil publik.</div><button class="btn ${type==='LOST'?'danger':'primary'}">Kirim Laporan</button></form></div></section>`)
+}
+function submitReport(e,type){e.preventDefault();let r={id:'r'+Date.now(),owner:me.id,type,status:'PENDING',title:ftitle.value,cat:fcat.value,brand:fbrand.value,color:fcolor.value,desc:fdesc.value,loc:floc.value,date:fdate.value,reporter:me.name};db.reports.unshift(r);save();toast('Laporan berhasil dikirim dan menunggu verifikasi');dashboard()}
+function dashboard(){
+ if(!me){login();return}
+ const mine=db.reports.filter(r=>r.owner===me.id), claims=db.claims.filter(c=>c.user===me.id);
+ layout(`<section class="page"><div class="container"><div class="dashboardhead"><div><h1>Selamat datang, ${esc(firstName(me.name))}! 👋</h1><p class="muted">Kelola laporan dan klaim barang Anda.</p></div><div class="actions"><button class="btn danger small" onclick="createReport('LOST')">⚠ Hilang</button><button class="btn primary small" onclick="createReport('FOUND')">✓ Temuan</button></div></div>
+ <div class="dashstats"><div class="stat"><strong>${mine.length}</strong><span class="muted">Laporan Saya</span></div><div class="stat"><strong>${claims.filter(c=>['PENDING','APPROVED'].includes(c.status)).length}</strong><span class="muted">Klaim Aktif</span></div><div class="stat"><strong>${mine.filter(r=>r.status==='RETURNED').length}</strong><span class="muted">Barang Dikembalikan</span></div></div>
+ <div class="dashgrid"><div class="card"><h3>Laporan Terbaru</h3>${mine.slice(0,6).map(r=>`<div class="listrow"><div><b onclick="detail('${r.id}')" style="cursor:pointer">${esc(r.title)}</b><div class="muted" style="font-size:12px">${esc(r.loc)}</div></div><div>${typeTag(r.type)} ${statusTag(r.status)}</div></div>`).join('')||'<div class="empty">Belum ada laporan.</div>'}</div>
+ <div class="card"><h3>Klaim Saya</h3>${claims.slice(0,6).map(c=>`<div class="listrow"><div><b>${esc(db.reports.find(r=>r.id===c.report)?.title||'Laporan')}</b><div class="muted" style="font-size:12px">${esc(c.note||'')}</div></div>${statusTag(c.status)}</div>`).join('')||'<div class="empty">Belum ada klaim.</div>'}</div></div></div></section>`)
+}
+function claim(id){
+ if(!me){login();return}let r=db.reports.find(x=>x.id===id);
+ openModal(`<h3>Ajukan Klaim</h3><p>Barang: <b>${esc(r.title)}</b></p><form onsubmit="submitClaim(event,'${id}')"><div class="field"><label>Jawaban pertanyaan pembuktian *</label><input class="input" id="proof" required placeholder="Contoh: ciri khusus yang hanya Anda ketahui"></div><div class="field"><label>Deskripsi kepemilikan *</label><textarea class="textarea" id="ownership" minlength="10" required placeholder="Jelaskan bukti bahwa barang ini milik Anda."></textarea></div><div class="field"><label>Nomor kontak petugas kampus *</label><input class="input" id="phone" required placeholder="08xxxxxxxxxx"></div><div class="notice">Klaim akan diperiksa admin. Jangan masukkan password atau data sensitif yang tidak diperlukan.</div><div class="modalactions"><button type="button" class="btn secondary" onclick="closeModal()">Batal</button><button class="btn primary">Kirim Klaim</button></div></form>`)
+}
+function submitClaim(e,id){e.preventDefault();let exists=db.claims.some(c=>c.report===id&&c.user===me.id&&['PENDING','APPROVED'].includes(c.status));if(exists){toast('Anda sudah memiliki klaim aktif');return}db.claims.push({id:'c'+Date.now(),report:id,user:me.id,status:'PENDING',proof:proof.value,ownership:ownership.value,phone:phone.value,note:'',date:new Date().toISOString()});save();closeModal();toast('Klaim dikirim ke admin');dashboard()}
+function markFound(id){let r=db.reports.find(x=>x.id===id);r.status='MATCHED';save();toast('Laporan ditandai sudah ditemukan');detail(id)}
+function admin(){
+ if(!me||me.role!=='ADMIN'){login();return}
+ const pendingR=db.reports.filter(r=>r.status==='PENDING'), pendingC=db.claims.filter(c=>c.status==='PENDING');
+ let body='';
+ if(adminTab==='dashboard')body=`<div class="dashstats"><div class="stat"><strong>${pendingR.length}</strong><span class="muted">Pending Reports</span></div><div class="stat"><strong>${db.reports.filter(r=>r.status==='OPEN').length}</strong><span class="muted">Open Reports</span></div><div class="stat"><strong>${pendingC.length}</strong><span class="muted">Pending Claims</span></div></div><div class="dashgrid"><div class="card"><h3>Laporan menunggu verifikasi</h3>${pendingR.map(adminReportRow).join('')||'<div class="empty">Tidak ada.</div>'}</div><div class="card"><h3>Klaim menunggu keputusan</h3>${pendingC.map(adminClaimRow).join('')||'<div class="empty">Tidak ada.</div>'}</div></div>`;
+ if(adminTab==='reports')body=`<div class="card tablewrap"><table><thead><tr><th>Barang</th><th>Tipe</th><th>Status</th><th>Lokasi</th><th>Aksi</th></tr></thead><tbody>${db.reports.map(r=>`<tr><td><b>${esc(r.title)}</b><br><span class="muted">${esc(r.reporter)}</span></td><td>${typeTag(r.type)}</td><td>${statusTag(r.status)}</td><td>${esc(r.loc)}</td><td>${r.status==='PENDING'?`<button class="btn small primary" onclick="verify('${r.id}')">Verifikasi</button>`:`<button class="btn small secondary" onclick="adminStatus('${r.id}')">Ubah status</button>`}</td></tr>`).join('')}</tbody></table></div>`;
+ if(adminTab==='claims')body=`<div class="card tablewrap"><table><thead><tr><th>Barang</th><th>Pengklaim</th><th>Status</th><th>Bukti</th><th>Aksi</th></tr></thead><tbody>${db.claims.map(c=>{let r=db.reports.find(x=>x.id===c.report),u=db.users.find(x=>x.id===c.user);return `<tr><td>${esc(r?.title)}</td><td>${esc(u?.name)}</td><td>${statusTag(c.status)}</td><td>${esc(c.proof)}</td><td>${c.status==='PENDING'?`<button class="btn small primary" onclick="decide('${c.id}')">Tinjau</button>`:c.status==='APPROVED'?`<button class="btn small primary" onclick="handover('${c.id}')">Catat Handover</button>`:'—'}</td></tr>`}).join('')||'<tr><td colspan="5">Belum ada klaim.</td></tr>'}</tbody></table></div>`;
+ if(adminTab==='categories')body=`<div class="card"><h3>Kategori</h3>${db.cats.map(c=>`<div class="listrow"><span>${esc(c)}</span><span class="muted">Aktif</span></div>`).join('')}</div>`;
+ if(adminTab==='users')body=`<div class="card tablewrap"><table><thead><tr><th>Nama</th><th>Email</th><th>Role</th><th>Status</th></tr></thead><tbody>${db.users.map(u=>`<tr><td>${esc(u.name)}</td><td>${esc(u.email)}</td><td>${u.role}</td><td>${u.active?'Aktif':'Nonaktif'}</td></tr>`).join('')}</tbody></table></div>`;
+ layout(`<section class="page"><div class="container"><div class="dashboardhead"><div><h1>🛡️ Panel Admin</h1><p class="muted">CampusFind Management — mode demo</p></div></div>
+ <div class="adminnav">${[['dashboard','Dashboard'],['reports','Laporan'],['claims','Klaim'],['categories','Kategori'],['users','Pengguna']].map(([k,l])=>`<button class="${adminTab===k?'active':''}" onclick="adminTab='${k}';admin()">${l}</button>`).join('')}</div>${body}</div></section>`)
+}
+function adminReportRow(r){return `<div class="listrow"><div><b>${esc(r.title)}</b><div class="muted">${typeTag(r.type)} · ${esc(r.reporter)}</div></div><button class="btn small primary" onclick="verify('${r.id}')">Verifikasi</button></div>`}
+function adminClaimRow(c){let r=db.reports.find(x=>x.id===c.report),u=db.users.find(x=>x.id===c.user);return `<div class="listrow"><div><b>${esc(r?.title)}</b><div class="muted">${esc(u?.name)}</div></div><button class="btn small primary" onclick="decide('${c.id}')">Tinjau</button></div>`}
+function verify(id){let r=db.reports.find(x=>x.id===id);openModal(`<h3>Verifikasi Laporan</h3><p><b>${esc(r.title)}</b><br>${esc(r.desc)}</p><div class="field"><label>Status</label><select class="select" id="vstatus"><option value="OPEN">OPEN — tampil publik</option><option value="REJECTED">REJECTED — tolak</option></select></div><div class="field"><label>Catatan moderator</label><textarea class="textarea" id="vnote"></textarea></div><div class="modalactions"><button class="btn secondary" onclick="closeModal()">Batal</button><button class="btn primary" onclick="doVerify('${id}')">Simpan</button></div>`)}
+function doVerify(id){let r=db.reports.find(x=>x.id===id);r.status=vstatus.value;r.note=vnote.value;save();closeModal();toast('Status laporan diperbarui');admin()}
+function decide(id){let c=db.claims.find(x=>x.id===id),r=db.reports.find(x=>x.id===c.report),u=db.users.find(x=>x.id===c.user);openModal(`<h3>Keputusan Klaim</h3><p><b>${esc(r.title)}</b> — ${esc(u.name)}</p><div class="notice"><b>Bukti:</b> ${esc(c.proof)}<br><b>Deskripsi:</b> ${esc(c.ownership)}</div><div class="field"><label>Keputusan</label><select class="select" id="cstatus"><option value="APPROVED">Setujui</option><option value="REJECTED">Tolak</option></select></div><div class="field"><label>Catatan keputusan *</label><textarea class="textarea" id="cnote" required></textarea></div><div class="modalactions"><button class="btn secondary" onclick="closeModal()">Batal</button><button class="btn primary" onclick="doDecide('${id}')">Simpan</button></div>`)}
+function doDecide(id){let c=db.claims.find(x=>x.id===id),r=db.reports.find(x=>x.id===c.report);c.status=cstatus.value;c.note=cnote.value;if(c.status==='APPROVED')r.status='CLAIMED';save();closeModal();toast('Keputusan klaim disimpan');admin()}
+function handover(id){let c=db.claims.find(x=>x.id===id),r=db.reports.find(x=>x.id===c.report),u=db.users.find(x=>x.id===c.user);openModal(`<h3>Catat Handover</h3><p>Barang: <b>${esc(r.title)}</b><br>Penerima: <b>${esc(u.name)}</b></p><form onsubmit="doHandover(event,'${id}')"><div class="field"><label>Nama penerima</label><input class="input" id="hname" required value="${esc(u.name)}"></div><div class="field"><label>Lokasi handover</label><input class="input" id="hloc" required placeholder="Contoh: Ruang Kemahasiswaan"></div><div class="field"><label>Catatan</label><textarea class="textarea" id="hnote"></textarea></div><button class="btn primary">Selesaikan Handover</button></form>`)}
+function doHandover(e,id){e.preventDefault();let c=db.claims.find(x=>x.id===id),r=db.reports.find(x=>x.id===c.report);db.handovers.push({id:'h'+Date.now(),claim:id,report:r.id,name:hname.value,loc:hloc.value,note:hnote.value,date:new Date().toISOString()});c.status='COMPLETED';r.status='RETURNED';save();closeModal();toast('Handover selesai dan audit tercatat');admin()}
+function adminStatus(id){let r=db.reports.find(x=>x.id===id);openModal(`<h3>Ubah Status</h3><div class="field"><select class="select" id="sstatus">${['OPEN','MATCHED','CLAIMED','RETURNED','REJECTED','ARCHIVED'].map(x=>`<option ${x===r.status?'selected':''}>${x}</option>`).join('')}</select></div><button class="btn primary" onclick="r.status=sstatus.value;save();closeModal();admin();toast('Status diperbarui')">Simpan</button>`)}
+
+home();
+</script>
+</body>
+</html>
